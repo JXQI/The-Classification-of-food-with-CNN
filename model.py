@@ -1,5 +1,6 @@
 import torch.nn as nn
 import torch.nn.functional as F
+import torch
 
 class Net(nn.Module):
     def __init__(self):
@@ -19,3 +20,6 @@ class Net(nn.Module):
         x=self.fc2(x)
 
         return x
+if __name__=="__main__":
+    net=Net()
+    print(net)
