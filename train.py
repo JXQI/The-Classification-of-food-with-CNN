@@ -16,18 +16,12 @@ class Process:
         self.transform=transforms.Compose([transforms.Resize((224,224)),transforms.ToTensor(),transforms.Normalize((0.485, 0.456, 0.406), (0.229, 0.224, 0.225))])
         train_set=dataloader(path='./food-11/training',transforms=self.transform,train_set=True)
         val_set = dataloader(path='./food-11/validation', transforms=self.transform, train_set=True)
-<<<<<<< HEAD
-        self.train_loader=DataLoader(dataset=train_set,batch_size=8,shuffle=True,num_workers=2)
-        self.val_loader = DataLoader(dataset=val_set, batch_size=8, shuffle=True, num_workers=2)
-        self.loss=nn.CrossEntropyLoss()
-        self.optim=optim.SGD(self.net.parameters(),lr=0.1,momentum=0.5)
-=======
+
         print(len(train_set),len(val_set))
         self.train_loader=DataLoader(dataset=train_set,batch_size=8,shuffle=True,num_workers=0)
         self.val_loader = DataLoader(dataset=val_set, batch_size=8, shuffle=True, num_workers=0)
         self.loss=nn.CrossEntropyLoss()
         self.optim=optim.SGD(self.net.parameters(),lr=0.1,momentum=0.9)
->>>>>>> add the accuracy and loss
     def train(self,epoch):
         loss_list=[]
         acc_list=[]
@@ -75,9 +69,5 @@ if __name__=="__main__":
     device=torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
     print(device)
     pro=Process(device)
-<<<<<<< HEAD
-    pro.train(epoch=200)
-=======
     pro.train(epoch=2)
->>>>>>> add the accuracy and loss
     pro.validate()
