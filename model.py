@@ -161,7 +161,7 @@ class GoogLeNet_v1(nn.Module):
         super(GoogLeNet_v1,self).__init__()
         self.num_classes=num_classes
         self.features1=nn.Sequential(
-            nn.Conv2d(3,64,7,stride=2),
+            nn.Conv2d(3,64,7,stride=2,padding=3),
             nn.ReLU(inplace=True),
             nn.MaxPool2d(3,stride=2),
             nn.Conv2d(64,64,1),
@@ -172,6 +172,7 @@ class GoogLeNet_v1(nn.Module):
         self.maxpool=nn.MaxPool2d(3,stride=2)
         self.avgpool = nn.AdaptiveAvgPool2d((7, 7))
         self.fc=nn.Linear(in_features=1024*1*1,out_features=self.num_classes)
+        self.dropout=nn.Dropout()
     def forword(self,x):
         x=self.features1(x)
         x=inception(x,192,64,96,128,16,32,192,32) #3a
@@ -187,7 +188,8 @@ class GoogLeNet_v1(nn.Module):
         x=inception(x,832,384,92,384,48,128,28) #5b
         #接入全局平均池化层
         x=self.avgpool(x)
-        nn.Dropout()
+        x=torch.flatten(x,1)
+        x=self.dropout(x)
         x=self.fc(x)
 
         return x
